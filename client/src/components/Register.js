@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Axios from "axios";
+import "./register.css";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -18,15 +19,17 @@ const Register = () => {
   };
   return (
     <>
-      <div>
-        <label htmlFor="">enter username</label>
-        <input type="text" onChange={(e) => setUsername(e.target.value)} />
+      <div className="registerdiv">
+        <div>
+          <label htmlFor="">enter username</label>
+          <input type="text" onChange={(e) => setUsername(e.target.value)} />
+        </div>
+        <div>
+          <label htmlFor="">enter password</label>
+          <input type="text" onChange={(e) => setPassword(e.target.value)} />
+        </div>
+        <button onClick={handleRegister}>SUBMIT</button>
       </div>
-      <div>
-        <label htmlFor="">enter password</label>
-        <input type="text" onChange={(e) => setPassword(e.target.value)} />
-      </div>
-      <button onClick={handleRegister}>SUBMIT</button>
     </>
   );
 };

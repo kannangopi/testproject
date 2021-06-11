@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const chatroom = mongoose.Schema({
   partner: {
-    type: String,
+    type: [String, String],
     required: true,
   },
   chat: {
@@ -14,4 +14,4 @@ const chatroom = mongoose.Schema({
     },
   },
 });
-module.exports = chatroom;
+module.exports = mongoose.model("chats", chatroom);

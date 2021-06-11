@@ -13,12 +13,14 @@ const Chat = () => {
       console.log(res.data);
       setUserList(res.data);
     });
-    socket.on("disp", (msg) => {
-      console.log(msg);
-      setDispMessage([...dispMessage, msg]);
-    });
-    console.log("............", dispMessage);
   }, []);
+  useEffect(() => {
+    socket.on("disp", (msg) => {
+      console.log("..........", dispMessage);
+      setDispMessage([...dispMessage, msg]);
+      console.log(dispMessage);
+    });
+  }, [dispMessage]);
   const handleChat = (room) => {
     console.log(room);
     setUser(room);

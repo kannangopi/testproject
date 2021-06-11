@@ -31,10 +31,14 @@ io.on("connection", (socket) => {
   console.log("user connected to the socket");
   socket.on("joinroom", (room) => {
     console.log(room);
+    socket.join(room);
   });
   socket.on("sendchat", (msg) => {
     socket.emit("disp", msg.message);
-    io.to(msg.room);
+    io.to(msg.room).emit("message", msg.message);
     console.log(msg.message);
+  });
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
   });
 });

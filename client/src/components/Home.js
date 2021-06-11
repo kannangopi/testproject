@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useHistory } from "react-router";
 import Axios from "axios";
+import "./Home.css";
 const Home = () => {
   const history = useHistory();
   const [username, setUsername] = useState("");
@@ -15,7 +16,7 @@ const Home = () => {
         password: password,
       }).then((reslt) => {
         if (reslt.data === true) {
-          ///start
+          console.log(reslt);
           history.push("/chat");
         }
       });
@@ -23,11 +24,13 @@ const Home = () => {
   };
   return (
     <>
-      <label htmlFor="">user name</label>
-      <input type="text" onChange={(e) => setUsername(e.target.value)} />
-      <label htmlFor="">enter password</label>
-      <input type="text" onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={handleLogin}>SUBMIT</button>
+      <div className="logindiv">
+        <label htmlFor="">user name</label>
+        <input type="text" onChange={(e) => setUsername(e.target.value)} />
+        <label htmlFor="">enter password</label>
+        <input type="text" onChange={(e) => setPassword(e.target.value)} />
+        <button onClick={handleLogin}>SUBMIT</button>
+      </div>
     </>
   );
 };

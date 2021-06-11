@@ -39,6 +39,7 @@ router.put("/login", (req, res) => {
       bcrypt.compare(req.body.password, result[0].password, (error, reslt) => {
         if (error) res.send(err);
         else {
+          console.log(result);
           res.send(reslt);
         }
       });
@@ -49,7 +50,7 @@ router.put("/login", (req, res) => {
   });
 });
 router.get("/user", (req, res) => {
-  db.find({}, { username: 1, _id: 0 }, (err, resp) => {
+  db.find({}, { username: 1, _id: 1 }, (err, resp) => {
     if (err) res.send(err);
     else res.send(resp);
   });
