@@ -1,0 +1,18 @@
+.chatbox {
+  height: 50px;
+  width: 300px;
+  border-radius: 15px;
+}
+.chatlist {
+  height: 600px;
+  width: 300px;
+  float: right;
+}
+.displaymsg {
+  height: 600px;
+  width: 600px;
+  padding: 20px;
+}
+.chatdiv {
+  margin-top: 80px;
+}
