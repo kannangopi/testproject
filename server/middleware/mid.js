@@ -1,5 +1,5 @@
 const db = require("../db/userschema");
-const roomid = null;
+
 const roomCheck = (room) => {
   db.aggregate(
     [
@@ -62,27 +62,5 @@ const roomCheck = (room) => {
       }
     }
   );
-  // db.find({}, (err, res) => {
-  //   if (err) console.log(err);
-  //   else {
-  //     if (res.length > 0) {
-  //       let newdb = new db({
-  //         user1: room.user,
-  //         user2: room.chatpartner,
-  //         room: room.user + room.chatpartner,
-  //         chat: {
-  //           msg: {
-  //             date: room.date,
-  //             message: "",
-  //           },
-  //         },
-  //       });
-  //       newdb.save();
-  //     } else {
-  //       console.log("room exist");
-  //       console.log(res);
-  //     }
-  //   }
-  // });
 };
 module.exports = roomCheck;

@@ -26,16 +26,22 @@ io = socket(server);
 
 app.use(router);
 
-//                                                    //chat
-
+//                                                    //connecting to socket
 io.on("connection", async (socket) => {
   console.log("user connected to the socket");
+
+  //                                                  //chat joining room
+
   socket.on("joinroom", async (room) => {
+    //                                              //CALLING function checking for roomname
     partnerRoom = await roomCheck(room);
     console.log(partnerRoom);
     console.log("checking room name on join");
-    // socket.join(partnerRoom);
+    socket.join(partnerRoom);
   });
+
+  //                                                //sending message to room
+
   socket.on("sendchat", (msg) => {
     console.log(partnerRoom + "test room name");
     // socket.emit("disp", msg.message);
