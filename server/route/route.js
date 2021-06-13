@@ -40,7 +40,8 @@ router.put("/login", (req, res) => {
         if (error) res.send(err);
         else {
           console.log(result);
-          res.send(reslt);
+          // res.send(reslt);
+          res.json({ login: true, username: req.body.username });
         }
       });
       // res.send(result);

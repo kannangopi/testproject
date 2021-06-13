@@ -15,8 +15,9 @@ const Home = () => {
         username: username,
         password: password,
       }).then((reslt) => {
-        if (reslt.data === true) {
+        if (reslt.data.login === true) {
           console.log(reslt);
+          localStorage.setItem("user", reslt.data.username);
           history.push("/chat");
         }
       });

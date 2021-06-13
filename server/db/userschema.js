@@ -1,17 +1,29 @@
 const mongoose = require("mongoose");
 const chatroom = mongoose.Schema({
-  partner: {
-    type: [String, String],
+  user1: {
+    type: String,
     required: true,
   },
+  user2: {
+    type: String,
+    require: true,
+  },
+  room: {
+    type: String,
+    require: true,
+  },
   chat: {
-    date: {
-      type: Date,
-    },
+    msg: {
+      date: {
+        type: String,
+        required: false,
+      },
 
-    message: {
-      type: String,
+      message: {
+        type: String,
+        required: false,
+      },
     },
   },
 });
-module.exports = mongoose.model("chats", chatroom);
+module.exports = mongoose.model("chat", chatroom);

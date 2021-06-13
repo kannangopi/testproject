@@ -8,10 +8,13 @@ const Chat = () => {
   const [message, setMessage] = useState("");
   const [dispMessage, setDispMessage] = useState([]);
   const [user, setUser] = useState("");
+  const [comp, setComp] = useState("");
+
   useEffect(() => {
     axios.get("http://localhost:3020/user").then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       setUserList(res.data);
+      setUser(localStorage.getItem("user"));
     });
   }, []);
   useEffect(() => {
@@ -21,11 +24,24 @@ const Chat = () => {
       console.log(dispMessage);
     });
   }, [dispMessage]);
-  const handleChat = (room) => {
-    console.log(room);
-    setUser(room);
-
-    socket.emit("joinroom", room);
+  const joinChat = (chatpartner) => {
+    console.log(user + chatpartner);
+    // setUser(room);
+    let today = new Date();
+    let date =
+      today.getDate() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getFullYear() +
+      " " +
+      today.getHours() +
+      ":" +
+      today.getMinutes() +
+      ":" +
+      today.getSeconds();
+    console.log(date);
+    socket.emit("joinroom", { user, chatpartner, date });
   };
   const handleSendChat = () => {
     socket.emit("sendchat", { msg: user, message });
@@ -41,7 +57,7 @@ const Chat = () => {
                   <tr key={index}>
                     <td>{value.username}</td>
                     <td>
-                      <button onClick={() => handleChat(value.username)}>
+                      <button onClick={() => joinChat(value.username)}>
                         chat
                       </button>
                     </td>
