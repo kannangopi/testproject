@@ -2,26 +2,24 @@ import "./chat.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import socketClient from "socket.io-client";
-let socket = socketClient("localhost:3020");
+let socket;
 const Chat = () => {
   const [userList, setUserList] = useState([]);
   const [message, setMessage] = useState("");
   const [dispMessage, setDispMessage] = useState([]);
   const [user, setUser] = useState("");
-  const [comp, setComp] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3020/user").then((res) => {
+    socket = socketClient("localhost:3020");
+    setUser(localStorage.getItem("user"));
+    axios.put("http://localhost:3020/user", { user: user }).then((res) => {
       // console.log(res.data);
       setUserList(res.data);
-      setUser(localStorage.getItem("user"));
     });
   }, []);
   useEffect(() => {
     socket.on("disp", (msg) => {
-      console.log("..........", dispMessage);
       setDispMessage([...dispMessage, msg]);
-      console.log(dispMessage);
     });
   }, [dispMessage]);
   const joinChat = (chatpartner) => {

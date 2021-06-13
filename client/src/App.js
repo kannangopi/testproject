@@ -1,12 +1,10 @@
 import "./App.css";
 import Home from "./components/Home";
 import Chat from "./components/Chat";
-import { useState } from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Register from "./components/Register";
 
 function App() {
-  const [user, setUser] = useState("");
   return (
     <div className="App">
       <div className="header">
@@ -21,7 +19,6 @@ function App() {
             <Route exact path="/chat" component={Chat}></Route>
           </Switch>
         </Router>
-        <div>{user === "" ? null : <button>Logout</button>}</div>
       </div>
     </div>
   );

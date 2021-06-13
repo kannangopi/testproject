@@ -28,7 +28,7 @@ router.post("/register", (req, res) => {
     }
   });
 });
-
+//                                                    //handle login api
 router.put("/login", (req, res) => {
   console.log(req.body.username);
   console.log(req.body.password);
@@ -50,10 +50,16 @@ router.put("/login", (req, res) => {
     }
   });
 });
-router.get("/user", (req, res) => {
-  db.find({}, { username: 1, _id: 1 }, (err, resp) => {
-    if (err) res.send(err);
-    else res.send(resp);
-  });
+//                                                //select all users for chat
+router.put("/user", (req, res) => {
+  console.log(req.body);
+  db.find(
+    { username: { $ne: req.body.user } },
+    { username: 1, _id: 0 },
+    (err, resp) => {
+      if (err) res.send(err);
+      else res.send(resp);
+    }
+  );
 });
 module.exports = router;
