@@ -1,7 +1,7 @@
 const db = require("../db/userschema");
-
-const roomCheck = (room) => {
-  db.aggregate(
+let roomid;
+const roomCheck = async (room) => {
+  await db.aggregate(
     [
       {
         $match: {
@@ -14,12 +14,13 @@ const roomCheck = (room) => {
         },
       },
     ],
-    (err, resl) => {
+    async (err, resl) => {
       if (err) console.log(err);
       else if (resl.length > 0) {
-        console.log(resl[0].room + " first condition");
-        return resl[0].room;
-        // roomid = resl[0].room;
+        roomid = await resl[0].room;
+        console.log(roomid + " first condition");
+
+        return roomid;
       } else {
         db.aggregate(
           [
@@ -34,33 +35,37 @@ const roomCheck = (room) => {
               },
             },
           ],
-          (error, rest) => {
+          async (error, rest) => {
             if (error) console.error();
             else if (rest.length > 0) {
-              console.log(rest[0].room + " second condition");
-              return rest[0].room;
-              // roomid = rest[0].room;
+              roomid = await rest[0].room;
+              console.log(roomid + " second condition");
+
+              return roomid;
             } else {
               let newdb = new db({
                 user1: room.user,
                 user2: room.chatpartner,
                 room: room.user + room.chatpartner,
-                chat: {
-                  msg: {
+                chat: [
+                  {
                     date: room.date,
                     message: "",
                   },
-                },
+                ],
               });
-              newdb.save();
-              console.log(room.user + room.chatpartner + "create new user");
-              return room.user + room.chatpartner;
-              // roomid = room.user + room.chatpartner;
+              await newdb.save();
+              roomid = room.user + room.chatpartner;
+              console.log(roomid + "create new user");
+
+              return roomid;
             }
           }
         );
       }
     }
   );
+  // console.log(roomid, "roomid fuction returning");
+  // return roomid;
 };
 module.exports = roomCheck;

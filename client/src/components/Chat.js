@@ -2,29 +2,37 @@ import "./chat.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import socketClient from "socket.io-client";
-let socket;
+let socket = socketClient("localhost:3021");
 const Chat = () => {
   const [userList, setUserList] = useState([]);
   const [message, setMessage] = useState("");
   const [dispMessage, setDispMessage] = useState([]);
   const [user, setUser] = useState("");
+  const [room, setRoom] = useState("room");
 
   useEffect(() => {
-    socket = socketClient("localhost:3020");
     setUser(localStorage.getItem("user"));
-    axios.put("http://localhost:3020/user", { user: user }).then((res) => {
-      // console.log(res.data);
-      setUserList(res.data);
-    });
-  }, []);
+    if (user != null) {
+      axios.put("http://localhost:3021/user", { user: user }).then((res) => {
+        console.log(res.data);
+        setUserList(res.data);
+      });
+    }
+  }, [user]);
   useEffect(() => {
+    socket.on("room", (roomid) => {
+      setRoom(roomid.partnerRoom);
+      console.log(roomid, "..........room");
+      localStorage.setItem("room", roomid.partnerRoom);
+    });
     socket.on("disp", (msg) => {
       setDispMessage([...dispMessage, msg]);
     });
   }, [dispMessage]);
   const joinChat = (chatpartner) => {
-    console.log(user + chatpartner);
-    // setUser(room);
+    let testroom = localStorage.getItem("room");
+    console.log(testroom);
+
     let today = new Date();
     let date =
       today.getDate() +
@@ -38,11 +46,24 @@ const Chat = () => {
       today.getMinutes() +
       ":" +
       today.getSeconds();
-    console.log(date);
-    socket.emit("joinroom", { user, chatpartner, date });
+
+    if (chatpartner == testroom) {
+      // setUser(room);
+      socket.emit("joinroom", { user, chatpartner, date });
+    } else {
+      console.log(testroom);
+      socket.emit("leaveroom", { room: testroom });
+      socket.emit("joinroom", { user, chatpartner, date });
+    }
   };
   const handleSendChat = () => {
-    socket.emit("sendchat", { msg: user, message });
+    let chatroom = localStorage.getItem("room");
+    console.log(chatroom);
+    if (chatroom === null) {
+      alert("join room first");
+    } else {
+      socket.emit("sendchat", { msg: user, chatroom, message });
+    }
   };
   return (
     <>

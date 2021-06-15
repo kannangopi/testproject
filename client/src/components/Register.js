@@ -9,7 +9,7 @@ const Register = () => {
       alert("password and user name can not be empty");
     } else {
       console.log(username, password);
-      Axios.post("http://localhost:3020/register", {
+      Axios.post("http://localhost:3021/register", {
         username: username,
         password: password,
       }).then((res) => {

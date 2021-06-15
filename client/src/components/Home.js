@@ -11,7 +11,7 @@ const Home = () => {
       alert("password and user name can not be empty");
     } else {
       console.log(username, password);
-      Axios.put("http://localhost:3020/login", {
+      Axios.put("http://localhost:3021/login", {
         username: username,
         password: password,
       }).then((reslt) => {

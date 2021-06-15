@@ -10,10 +10,16 @@ const chatroom = mongoose.Schema({
   },
   room: {
     type: String,
-    require: true,
+    required: true,
   },
   chat: {
-    msg: {
+    type: Array,
+    required: true,
+  },
+});
+module.exports = mongoose.model("chat", chatroom);
+
+/*{
       date: {
         type: String,
         required: false,
@@ -23,7 +29,4 @@ const chatroom = mongoose.Schema({
         type: String,
         required: false,
       },
-    },
-  },
-});
-module.exports = mongoose.model("chat", chatroom);
+    },*/

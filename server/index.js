@@ -7,6 +7,8 @@ const router = require("./route/route");
 const socketio = require("socket.io");
 const app = express();
 const roomCheck = require("./middleware/mid");
+const roomcheck = require("./middleware/mid2");
+const saveMsg = require("./middleware/Savemsg");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -21,32 +23,35 @@ connection.on("open", () => {
 });
 app.use(router);
 //                                                      //server listening on 3020
-server.listen(3020, () => {
-  console.log("server is runing on 3020");
+server.listen(3021, () => {
+  console.log("server is runing on 3021");
 });
 
 //                                                    //connecting to socket
 io.on("connection", async (socket) => {
-  console.log("user connected to the socket");
+  console.log("user connected to the socket", socket.id);
 
   //                                                  //chat joining room
 
   socket.on("joinroom", async (room) => {
     //                                              //CALLING function checking for roomname
     // partnerRoom = await roomCheck(room);
-    console.log(partnerRoom);
+    partnerRoom = await roomcheck(room);
     console.log("checking room name on join");
-    // socket.join(partnerRoom);
-    socket.join(123);
+    socket.join(partnerRoom); //next edit result.chat.msg.message
+    console.log(partnerRoom, "11111111111");
+    io.emit("room", { partnerRoom });
+  });
+  //                                                 //leaveing room
+  socket.on("leaveroom", (room) => {
+    console.log(room.room);
+    socket.leave(room.room);
   });
 
   //                                                //sending message to room
 
   socket.on("sendchat", (msg) => {
-    console.log(partnerRoom + "test room name");
-    socket.emit("disp", msg.message);
-    // io.to(partnerRoom).emit("disp", msg.message);
-    io.to(123).emit("disp", msg.message);
+    io.to(msg.chatroom).emit("disp", msg.message);
     console.log(msg.message);
   });
   socket.on("disconnect", () => {
