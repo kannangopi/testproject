@@ -29,6 +29,7 @@ const Chat = () => {
       setDispMessage([...dispMessage, msg]);
     });
   }, [dispMessage]);
+
   const joinChat = (chatpartner) => {
     let testroom = localStorage.getItem("room");
     console.log(testroom);
@@ -46,9 +47,10 @@ const Chat = () => {
       today.getMinutes() +
       ":" +
       today.getSeconds();
-
-    if (chatpartner == testroom) {
+    if (chatpartner === testroom) {
       // setUser(room);
+      alert("already chatting with same person");
+    } else if (testroom === null) {
       socket.emit("joinroom", { user, chatpartner, date });
     } else {
       console.log(testroom);
@@ -57,12 +59,26 @@ const Chat = () => {
     }
   };
   const handleSendChat = () => {
+    let today = new Date();
+    let date =
+      today.getDate() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getFullYear() +
+      " " +
+      today.getHours() +
+      ":" +
+      today.getMinutes() +
+      ":" +
+      today.getSeconds();
     let chatroom = localStorage.getItem("room");
     console.log(chatroom);
     if (chatroom === null) {
       alert("join room first");
     } else {
-      socket.emit("sendchat", { msg: user, chatroom, message });
+      console.log(chatroom, "testing chat roomname on chat send");
+      socket.emit("sendchat", { msg: user, chatroom, message, date });
     }
   };
   return (

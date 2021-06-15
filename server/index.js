@@ -6,6 +6,7 @@ const url = "mongodb://localhost:27017/sample";
 const router = require("./route/route");
 const socketio = require("socket.io");
 const app = express();
+const chatdb = require("./db/userschema");
 const roomCheck = require("./middleware/mid");
 const roomcheck = require("./middleware/mid2");
 const saveMsg = require("./middleware/Savemsg");
@@ -52,7 +53,16 @@ io.on("connection", async (socket) => {
 
   socket.on("sendchat", (msg) => {
     io.to(msg.chatroom).emit("disp", msg.message);
-    console.log(msg.message);
+    chatdb
+      .updateOne(
+        { room: msg.chatroom },
+        { $push: { chat: { message: msg.message, date: msg.date } } }
+      )
+      .then((result) => {
+        console.log(msg.chatroom);
+        console.log(msg.message);
+        console.log(result);
+      });
   });
   socket.on("disconnect", () => {
     console.log("Client disconnected");
