@@ -18,15 +18,3 @@ const chatroom = mongoose.Schema({
   },
 });
 module.exports = mongoose.model("chat", chatroom);
-
-/*{
-      date: {
-        type: String,
-        required: false,
-      },
-
-      message: {
-        type: String,
-        required: false,
-      },
-    },*/

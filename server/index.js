@@ -44,6 +44,7 @@ io.on("connection", async (socket) => {
     chatdb.find({ room: partnerRoom }, { chat: 1, _id: 0 }, (err, res) => {
       if (err) console.log(err);
       else {
+        console.log(res);
         let chathistory = res[0].chat;
         console.log(partnerRoom);
         io.emit("room", { room: partnerRoom, chathistory });

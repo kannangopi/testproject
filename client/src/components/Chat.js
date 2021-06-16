@@ -9,7 +9,7 @@ const Chat = () => {
   const [dispMessage, setDispMessage] = useState([]);
   const [user, setUser] = useState("");
   const [room, setRoom] = useState("");
-  const [partner, setPartner] = useState("");
+  const [partner, setPartner] = useState("no one");
 
   useEffect(() => {
     setUser(localStorage.getItem("user"));
@@ -113,7 +113,7 @@ const Chat = () => {
                     <td>{value.username}</td>
                     <td>
                       <button onClick={() => joinChat(value.username)}>
-                        chat
+                        CHAT
                       </button>
                     </td>
                   </tr>
@@ -131,15 +131,23 @@ const Chat = () => {
               setMessage(e.target.value);
             }}
           />
-          <button onClick={handleSendChat}>send</button>
+          <button className="sending_button" onClick={handleSendChat}>
+            SEND
+          </button>
         </div>
         <div className="displaymsg">
-          <h5>your chatting with {partner}</h5>
-          <ul>
-            {dispMessage.map((msg, index) => {
-              return <li key={index}>{msg}</li>;
-            })}
-          </ul>
+          <h3>YOUR CHATTING WITH {partner.toUpperCase()}</h3>
+          <div className="texingArea">
+            <ul>
+              {dispMessage.map((msg, index) => {
+                return (
+                  <li className="individualmsg" key={index}>
+                    {msg}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </div>
     </>

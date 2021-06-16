@@ -14,3 +14,10 @@ a {
   text-decoration: none;
   padding-left: 10px;
 }
+.logout {
+  width: 75px;
+  height: 36px;
+  border-radius: 15px;
+  float: right;
+  margin-right: 78px;
+}

@@ -10,7 +10,7 @@
   background-color: aquamarine;
   padding: 20px;
   margin-right: 50px;
-  margin-top: 50px;
+  margin-top: 67px;
   border-radius: 15px;
   border-style: double;
 }
@@ -20,9 +20,38 @@
   padding: 20px;
   margin: 10px;
   border-radius: 15px;
-  background-color: cadetblue;
-  overflow-y: scroll;
+  background-color: wheat;
 }
 .chatdiv {
   margin-top: 80px;
+}
+.sending_button {
+  width: 152px;
+  height: 56px;
+  border-radius: 15px;
+  padding: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.sending_button:hover {
+  background-color: bisque;
+}
+.texingArea {
+  height: 475px;
+  width: 549px;
+  padding: 20px;
+  background-color: white;
+  overflow-y: scroll;
+}
+li {
+  list-style: none;
+}
+.individualmsg {
+  margin-bottom: 10px;
+  width: 261px;
+  height: auto;
+  background-color: khaki;
+  padding: 11px;
+  border-radius: 15px;
+  text-decoration: none;
 }

@@ -35,7 +35,7 @@ const roomCheck = async (room) => {
         ]).then(async (rest) => {
           if (rest.length > 0) {
             roomid = await rest[0].room;
-            console.log(rest[0] + " second condition");
+            console.log(rest[0].room + " second condition");
 
             return roomid;
             console.log("not returning second condition");
