@@ -8,7 +8,8 @@ const Chat = () => {
   const [message, setMessage] = useState("");
   const [dispMessage, setDispMessage] = useState([]);
   const [user, setUser] = useState("");
-  const [room, setRoom] = useState("room");
+  const [room, setRoom] = useState("");
+  const [partner, setPartner] = useState("");
 
   useEffect(() => {
     setUser(localStorage.getItem("user"));
@@ -20,18 +21,36 @@ const Chat = () => {
     }
   }, [user]);
   useEffect(() => {
-    socket.on("room", (roomid) => {
-      setRoom(roomid.partnerRoom);
-      console.log(roomid, "..........room");
-      localStorage.setItem("room", roomid.partnerRoom);
-    });
     socket.on("disp", (msg) => {
       setDispMessage([...dispMessage, msg]);
     });
   }, [dispMessage]);
+  useEffect(() => {
+    socket.on("room", (roomid) => {
+      setRoom(roomid.room);
+      console.log(roomid.chathistory);
+      // roomid.chathistory.forEach((element) => {
+      //   console.log(element.message);
+      //   setDispMessage([element.message]);
+      // });
+
+      setDispMessage(
+        roomid.chathistory.map((value) => {
+          return value.message;
+        })
+      );
+
+      console.log(dispMessage);
+      console.log(roomid.room);
+      console.log(roomid, "..........room");
+      localStorage.setItem("room", roomid.room);
+    });
+  }, [partner]);
 
   const joinChat = (chatpartner) => {
+    setPartner(chatpartner);
     let testroom = localStorage.getItem("room");
+    setRoom(chatpartner);
     console.log(testroom);
 
     let today = new Date();
@@ -50,7 +69,7 @@ const Chat = () => {
     if (chatpartner === testroom) {
       // setUser(room);
       alert("already chatting with same person");
-    } else if (testroom === null) {
+    } else if (testroom === null || testroom === undefined) {
       socket.emit("joinroom", { user, chatpartner, date });
     } else {
       console.log(testroom);
@@ -85,6 +104,7 @@ const Chat = () => {
     <>
       <div className="chatdiv">
         <div className="chatlist">
+          <h2>USER LIST</h2>
           <table>
             <tbody>
               {userList.map((value, index) => {
@@ -114,6 +134,7 @@ const Chat = () => {
           <button onClick={handleSendChat}>send</button>
         </div>
         <div className="displaymsg">
+          <h5>your chatting with {partner}</h5>
           <ul>
             {dispMessage.map((msg, index) => {
               return <li key={index}>{msg}</li>;

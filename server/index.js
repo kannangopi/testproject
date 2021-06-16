@@ -7,9 +7,9 @@ const router = require("./route/route");
 const socketio = require("socket.io");
 const app = express();
 const chatdb = require("./db/userschema");
-const roomCheck = require("./middleware/mid");
+// const roomCheck = require("./middleware/mid");
 const roomcheck = require("./middleware/mid2");
-const saveMsg = require("./middleware/Savemsg");
+// const saveMsg = require("./middleware/Savemsg");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -41,7 +41,14 @@ io.on("connection", async (socket) => {
     console.log("checking room name on join");
     socket.join(partnerRoom); //next edit result.chat.msg.message
     console.log(partnerRoom, "11111111111");
-    io.emit("room", { partnerRoom });
+    chatdb.find({ room: partnerRoom }, { chat: 1, _id: 0 }, (err, res) => {
+      if (err) console.log(err);
+      else {
+        let chathistory = res[0].chat;
+        console.log(partnerRoom);
+        io.emit("room", { room: partnerRoom, chathistory });
+      }
+    });
   });
   //                                                 //leaveing room
   socket.on("leaveroom", (room) => {

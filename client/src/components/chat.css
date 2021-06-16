@@ -7,11 +7,21 @@
   height: 600px;
   width: 300px;
   float: right;
+  background-color: aquamarine;
+  padding: 20px;
+  margin-right: 50px;
+  margin-top: 50px;
+  border-radius: 15px;
+  border-style: double;
 }
 .displaymsg {
   height: 600px;
   width: 600px;
   padding: 20px;
+  margin: 10px;
+  border-radius: 15px;
+  background-color: cadetblue;
+  overflow-y: scroll;
 }
 .chatdiv {
   margin-top: 80px;

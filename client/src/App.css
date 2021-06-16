@@ -10,3 +10,7 @@ body {
   align-items: center;
   margin-bottom: 20px;
 }
+a {
+  text-decoration: none;
+  padding-left: 10px;
+}
