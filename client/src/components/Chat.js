@@ -13,7 +13,7 @@ const Chat = () => {
 
   useEffect(() => {
     setUser(localStorage.getItem("user"));
-    if (user != null) {
+    if (user !== null && user !== "") {
       axios.put("http://localhost:3021/user", { user: user }).then((res) => {
         console.log(res.data);
         setUserList(res.data);
@@ -28,30 +28,20 @@ const Chat = () => {
   useEffect(() => {
     socket.on("room", (roomid) => {
       setRoom(roomid.room);
-      console.log(roomid.chathistory);
-      // roomid.chathistory.forEach((element) => {
-      //   console.log(element.message);
-      //   setDispMessage([element.message]);
-      // });
-
       setDispMessage(
         roomid.chathistory.map((value) => {
           return value.message;
         })
       );
-
-      console.log(dispMessage);
-      console.log(roomid.room);
-      console.log(roomid, "..........room");
-      localStorage.setItem("room", roomid.room);
+      setRoom(roomid.room);
     });
-  }, [partner]);
+  }, [partner, room]);
 
   const joinChat = (chatpartner) => {
-    setPartner(chatpartner);
-    let testroom = localStorage.getItem("room");
-    setRoom(chatpartner);
-    console.log(testroom);
+    console.log(chatpartner);
+    // let testroom = localStorage.getItem("room");
+    // setRoom(chatpartner);
+    console.log(room);
 
     let today = new Date();
     let date =
@@ -66,16 +56,18 @@ const Chat = () => {
       today.getMinutes() +
       ":" +
       today.getSeconds();
-    if (chatpartner === testroom) {
-      // setUser(room);
-      alert("already chatting with same person");
-    } else if (testroom === null || testroom === undefined) {
+    // if (chatpartner === room) {
+    //   // setUser(room);
+    //   alert("already chatting with same person");
+    // } else
+    if (room === null || room === undefined) {
       socket.emit("joinroom", { user, chatpartner, date });
     } else {
-      console.log(testroom);
-      socket.emit("leaveroom", { room: testroom });
+      console.log(room);
+      // socket.emit("leaveroom", { room: room });
       socket.emit("joinroom", { user, chatpartner, date });
     }
+    setPartner(chatpartner);
   };
   const handleSendChat = () => {
     let today = new Date();
@@ -91,14 +83,15 @@ const Chat = () => {
       today.getMinutes() +
       ":" +
       today.getSeconds();
-    let chatroom = localStorage.getItem("room");
-    console.log(chatroom);
-    if (chatroom === null) {
+    // let chatroom = localStorage.getItem("room");
+    // console.log(room);
+    if (room === null) {
       alert("join room first");
     } else {
-      console.log(chatroom, "testing chat roomname on chat send");
-      socket.emit("sendchat", { msg: user, chatroom, message, date });
+      console.log(room, "testing chat roomname on chat send");
+      socket.emit("sendchat", { msg: user, room, message, date });
     }
+    setMessage("");
   };
   return (
     <>
@@ -125,6 +118,7 @@ const Chat = () => {
         </div>
         <div>
           <input
+            value={message}
             type="text"
             className="chatbox"
             onChange={(e) => {

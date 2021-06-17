@@ -15,9 +15,13 @@ a {
   padding-left: 10px;
 }
 .logout {
-  width: 75px;
-  height: 36px;
+  padding: 11px;
+  width: 96px;
+  height: 24px;
   border-radius: 15px;
   float: right;
   margin-right: 78px;
+  border-radius: 15px;
+  background-color: tomato;
+  text-align: center;
 }

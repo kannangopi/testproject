@@ -10,13 +10,11 @@ const Home = () => {
     if (username === "" || password === "") {
       alert("password and user name can not be empty");
     } else {
-      console.log(username, password);
       Axios.put("http://localhost:3021/login", {
         username: username,
         password: password,
       }).then((reslt) => {
         if (reslt.data.login === true) {
-          console.log(reslt);
           localStorage.setItem("user", reslt.data.username);
           history.push("/chat");
         }
@@ -29,7 +27,7 @@ const Home = () => {
         <label htmlFor="">user name</label>
         <input type="text" onChange={(e) => setUsername(e.target.value)} />
         <label htmlFor="">enter password</label>
-        <input type="text" onChange={(e) => setPassword(e.target.value)} />
+        <input type="password" onChange={(e) => setPassword(e.target.value)} />
         <button onClick={handleLogin}>SUBMIT</button>
       </div>
     </>

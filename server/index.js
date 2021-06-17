@@ -7,7 +7,7 @@ const router = require("./route/route");
 const socketio = require("socket.io");
 const app = express();
 const chatdb = require("./db/userschema");
-// const roomCheck = require("./middleware/mid");
+const roomCheck = require("./middleware/mid");
 const roomcheck = require("./middleware/mid2");
 // const saveMsg = require("./middleware/Savemsg");
 app.use(express.json());
@@ -36,17 +36,17 @@ io.on("connection", async (socket) => {
 
   socket.on("joinroom", async (room) => {
     //                                              //CALLING function checking for roomname
-    // partnerRoom = await roomCheck(room);
-    partnerRoom = await roomcheck(room);
+    partnerRoom = await roomCheck(room);
+    // partnerRoom = await roomcheck(room);
     console.log("checking room name on join");
-    socket.join(partnerRoom); //next edit result.chat.msg.message
-    console.log(partnerRoom, "11111111111");
-    chatdb.find({ room: partnerRoom }, { chat: 1, _id: 0 }, (err, res) => {
+    socket.join(partnerRoom.room);
+    console.log(partnerRoom.room, "11111111111");
+    chatdb.find({ room: partnerRoom.room }, { chat: 1, _id: 0 }, (err, res) => {
       if (err) console.log(err);
       else {
         console.log(res);
         let chathistory = res[0].chat;
-        console.log(partnerRoom);
+
         io.emit("room", { room: partnerRoom, chathistory });
       }
     });

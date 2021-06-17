@@ -1,7 +1,9 @@
 import { useState } from "react";
 import Axios from "axios";
 import "./register.css";
+import { useHistory } from "react-router";
 const Register = () => {
+  const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleRegister = () => {
@@ -14,8 +16,10 @@ const Register = () => {
         password: password,
       }).then((res) => {
         console.log(res);
+        history.push("/");
       });
     }
+    alert("user registered.....!");
   };
   return (
     <>
