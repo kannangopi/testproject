@@ -46,8 +46,9 @@ io.on("connection", async (socket) => {
       else {
         console.log(res);
         let chathistory = res[0].chat;
+        io.to(socket.id).emit("room", { room: partnerRoom.room, chathistory });
 
-        io.emit("room", { room: partnerRoom, chathistory });
+        // io.emit("room", { room: partnerRoom.room, chathistory });
       }
     });
   });
@@ -60,14 +61,22 @@ io.on("connection", async (socket) => {
   //                                                //sending message to room
 
   socket.on("sendchat", (msg) => {
-    io.to(msg.chatroom).emit("disp", msg.message);
+    io.to(msg.room).emit("disp", {
+      msg: msg.message,
+      message: msg.message,
+      date: msg.date,
+    });
     chatdb
       .updateOne(
-        { room: msg.chatroom },
-        { $push: { chat: { message: msg.message, date: msg.date } } }
+        { room: msg.room },
+        {
+          $push: {
+            chat: { user: msg.user, message: msg.message, date: msg.date },
+          },
+        }
       )
       .then((result) => {
-        console.log(msg.chatroom);
+        console.log(msg.room);
         console.log(msg.message);
         console.log(result);
       });

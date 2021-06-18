@@ -55,3 +55,7 @@ li {
   border-radius: 15px;
   text-decoration: none;
 }
+.individualmsg.label {
+  font-size: 10px;
+  float: right;
+}

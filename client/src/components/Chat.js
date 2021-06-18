@@ -22,6 +22,7 @@ const Chat = () => {
   }, [user]);
   useEffect(() => {
     socket.on("disp", (msg) => {
+      console.log(msg, "sdasdasdasdasd");
       setDispMessage([...dispMessage, msg]);
     });
   }, [dispMessage]);
@@ -30,7 +31,7 @@ const Chat = () => {
       setRoom(roomid.room);
       setDispMessage(
         roomid.chathistory.map((value) => {
-          return value.message;
+          return value;
         })
       );
       setRoom(roomid.room);
@@ -136,7 +137,8 @@ const Chat = () => {
               {dispMessage.map((msg, index) => {
                 return (
                   <li className="individualmsg" key={index}>
-                    {msg}
+                    {msg.message}
+                    <label>{msg.date}</label>
                   </li>
                 );
               })}
